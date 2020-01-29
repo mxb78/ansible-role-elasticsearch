@@ -5,6 +5,11 @@
 - include_tasks: setup-Debian.yml
   when: ansible_os_family == 'Debian'
 
+- name: Install Java
+  package:
+    name: java-1.8.0-openjdk
+    state: present
+
 - name: Install Elasticsearch.
   package:
     name: elasticsearch
