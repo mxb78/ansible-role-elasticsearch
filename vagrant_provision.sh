@@ -7,4 +7,4 @@ elif [ -f /etc/centos-release ]; then
   yum install -y net-tools git python3-pip python3-devel
 fi
 sudo pip3 install ansible
-/usr/local/bin/ansible-playbook -i "localhost," -c local /vagrant/playbook.yml
+/usr/local/bin/ansible-playbook -i "localhost," -c local /vagrant/vagrant.yml
