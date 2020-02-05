@@ -31,11 +31,11 @@
 #
 # Path to directory where to store the data (separate multiple locations by comma):
 #
-path.data: /var/lib/elasticsearch
+path.data: {{ elasticsearch_data_path }}
 #
 # Path to log files:
 #
-path.logs: /var/log/elasticsearch
+path.logs: {{ elasticsearch_logs_path }}
 #
 # ----------------------------------- Memory -----------------------------------
 #

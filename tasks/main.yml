@@ -15,6 +15,16 @@
     name: elasticsearch
     state: "{{ elasticsearch_package_state }}"
 
+- name: Create required directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: elasticsearch
+    mode: 0700
+  with_items:
+    - {{ elasticsearch_data_path }}
+    - {{ elasticsearch_logs_path }}
+
 - name: Configure Elasticsearch.
   template:
     src: "{{ item }}.j2"
