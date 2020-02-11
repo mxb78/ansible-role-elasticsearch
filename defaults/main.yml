@@ -13,3 +13,7 @@ elasticsearch_heap_size_max: 2g
 
 elasticsearch_data_path: '/var/lib/elasticsearch'
 elasticsearch_logs_path: '/var/log/elasticsearch'
+
+elasticsearch_cluster_minmaster_nodes:
+elasticsearch_cluster_name:
+elasticsearch_bootstrap_memory_lock:

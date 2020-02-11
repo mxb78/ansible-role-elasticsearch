@@ -14,14 +14,14 @@
 # ---------------------------------- Cluster -----------------------------------
 #
 # Use a descriptive name for your cluster:
-#
-#cluster.name: my-application
-#
+{% if elasticsearch_cluster_name is defined %}
+cluster.name: {{ elasticsearch_cluster_name }}
+{% endif %}
 # ------------------------------------ Node ------------------------------------
 #
 # Use a descriptive name for the node:
 #
-#node.name: node-1
+node.name: {{ inventory_hostname_short }}
 #
 # Add custom attributes to the node:
 #
@@ -40,8 +40,9 @@ path.logs: {{ elasticsearch_logs_path }}
 # ----------------------------------- Memory -----------------------------------
 #
 # Lock the memory on startup:
-#
-#bootstrap.memory_lock: true
+{% if elasticsearch_bootstrap_memory_lock is defined %}
+bootstrap.memory_lock: {{ elasticsearch_bootstrap_memory_lock }}
+{% endif %}
 #
 # Make sure that the heap size is set to about half the memory available
 # on the system and that the owner of the process is allowed to use this
@@ -53,7 +54,7 @@ path.logs: {{ elasticsearch_logs_path }}
 #
 # Set the bind address to a specific IP (IPv4 or IPv6):
 #
-network.host: {{ elasticsearch_network_host }}
+network.host: [ {{ elasticsearch_network_host }}, _local_ ]
 #
 # Set a custom port for HTTP:
 #
@@ -66,11 +67,18 @@ http.port: {{ elasticsearch_http_port }}
 # Pass an initial list of hosts to perform discovery when new node is started:
 # The default list of hosts is ["127.0.0.1", "[::1]"]
 #
-#discovery.zen.ping.unicast.hosts: ["host1", "host2"]
+{% if elasticsearch_cluster_hosts is defined %}
+discovery.zen.ping.unicast.hosts:
+{% for i in elasticsearch_cluster_hosts %}
+  - {{ i }}
+{% endfor %}
+{% endif %}
 #
 # Prevent the "split brain" by configuring the majority of nodes (total number of master-eligible nodes / 2 + 1):
 #
-#discovery.zen.minimum_master_nodes:
+{% if elasticsearch_cluster_hosts is defined %}
+discovery.zen.minimum_master_nodes: {{ elasticsearch_cluster_minmaster_nodes }}
+{% endif %}
 #
 # For more information, consult the zen discovery module documentation.
 #
@@ -87,3 +95,5 @@ http.port: {{ elasticsearch_http_port }}
 # Require explicit names when deleting indices:
 #
 #action.destructive_requires_name: true
+
+indices.fielddata.cache.size: 20%

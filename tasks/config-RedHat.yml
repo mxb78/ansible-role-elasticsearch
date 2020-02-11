@@ -1,0 +1,22 @@
+- name: systemd paths
+  file:
+    path: "/etc/systemd/system/elasticsearch.service.d/"
+    state: directory
+    owner: root
+    mode: 0700
+
+- name: systemd limits (/etc/systemd/)
+  template:
+    src: "{{ item }}.j2"
+    dest: "/etc/systemd/system/elasticsearch.service.d/{{item}}.conf"
+    owner: root
+    group: elasticsearch
+    mode: 0660
+  with_items:
+    - systemd-elasticsearch.conf
+    - systemd-override.conf
+  notify: restart elasticsearch
+
+- name: reload systemd
+  systemd:
+    daemon_reload: yes
